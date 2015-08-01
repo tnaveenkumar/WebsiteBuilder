@@ -131,13 +131,82 @@ $(function() {
 	}
 	FormBuilder();
 	
+	function GalleryEditor() {
+		var htm='<div class="modal fade" id="EditGalleryModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">';
+			htm+='<div class="modal-dialog">';
+				htm+='<div class="modal-content">';
+				  htm+='<div class="modal-header">';
+					htm+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+					htm+='<h4 class="modal-title">Edit Gallery</h4>';
+				  htm+='</div>';
+				  htm+='<div class="modal-body">';
+					htm+='<form id="GalleryImgUploadForm" enctype="multipart/form-data" role="form">';
+						htm+='<div class="form-group">';
+							htm+='<label for="GalleryLinks">Gallery URLs</label>';
+							htm+='<textarea class="form-control" name="GalleryLinks" id="GalleryLinks" placeholder="Gallery URLs"></textarea><p>Note: Add multiple Gallery Image links seperated by Comma</p>';
+						htm+='</div>';
+						htm+='<p>OR</p>';
+						htm+='<div class="GalleryHolder"><div class="form-group">';
+							htm+='<label for="GalleryImageUploade">Browse Image</label>';
+							htm+='<input type="file" name="files[]" class="ImageUploades" id="GalleryImageUploade"><input type="hidden">';
+						htm+='</div></div>';
+						//htm+='<a href="javascript:void(0)" class="btn btn-info btn-xs AddMoreImages">+ Add more</a>';
+					htm+='</div>';
+				  htm+='</form>';
+				  htm+='<p class="HintText"></p>';
+				  htm+='<div class="modal-footer">';
+					htm+='<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
+					htm+='<button type="button" class="btn btn-primary SaveGallery">Save</button>';
+				  htm+='</div>';
+				htm+='</div>';
+			  htm+='</div>';
+			htm+='</div>';
+		$('.ModelHolder').append(htm);
+	}
+	GalleryEditor();
+	
+	function ListEditorModal() {
+		var htm='';
+		htm+='<div class="modal fade" id="ListEditorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">';
+			htm+='<div class="modal-dialog" role="document">';
+				htm+='<div class="modal-content">';
+					htm+='<div class="modal-header">';
+						htm+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+							htm+='<h4 class="modal-title" id="myModalLabel">List Editor</h4>';
+					htm+='</div>';
+					htm+='<div class="modal-body">';
+						htm+='<div class="DynamicListBox">';
+							htm+='<form class="form-horizontal">';
+								htm+='<div class="form-group">';
+									htm+='<label for="ListText1" class="col-sm-2 control-label">*</label>';
+									htm+='<div class="col-sm-8">';
+										htm+='<input type="text" class="form-control ListText" id="ListText1" a=1 placeholder="List Item">';
+									htm+='</div>';
+									htm+='<div class="col-sm-2">';
+										htm+='<a href="javascript:void(0)" class="removeList btn btn-danger btn-xs">-</a>';
+									htm+='</div>';
+								htm+='</div>';
+							htm+='</form>';
+						htm+='</div>';
+					htm+='</div>';
+					htm+='<div class="modal-footer">';
+						htm+='<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
+						htm+='<button type="button" class="btn btn-primary SaveListEditor">Save</button>';
+					htm+='</div>';
+				htm+='</div>';
+			htm+='</div>';
+		htm+='</div>';
+		$('.ModelHolder').append(htm);
+	}
+	ListEditorModal();
+	
 	$('.logo-div').hover(function() {
 		parent = $(this);
 		parent.append("<div class='Layer'><i class='fa fa-pencil'></i></div>");
 		$('.Layer i').click(function() {
 			ImgHeight = parent.find('img').height();
 			ImgWidth = parent.find('img').width();
-			$('.HintText').html('Note: Image Width and Height shoul be '+ImgWidth+'px and '+ImgHeight+'px.');
+			$('.HintText').html('Note: Image Width and Height should be '+ImgWidth+'px and '+ImgHeight+'px.');
 			$('#EditLogoModel').modal('show');
 		});
 	}, function() {
@@ -169,6 +238,36 @@ $(function() {
 		$(this).append("<div class='Layer'><i class='fa fa-pencil'></i></div>");
 		$('.Layer i').click(function() {
 			$('#EditPhoneModel').modal('show');
+		});
+	}, function() {
+		$(this).children(".Layer").remove();
+	});
+	
+	$('.GalleryDiv').hover(function() {
+		parent = $(this);
+		parent.append("<div class='Layer'><i class='fa fa-pencil'></i></div>");
+		$('.Layer i').click(function() {
+			var htm = '';
+			htm+='<label for="GalleryImageUploade">Browse Image</label>';
+			parent.find('img').each(function(index, value) {
+				htm+='<div class="form-group"><input type="file" name="files[]" class="ImageUploades" id="GalleryImageUploade'+(index+1)+'"><input type="hidden"></div>';
+			});
+			$('.GalleryHolder').html(htm);
+			ImgHeight = parent.find('img:eq(0)').height();
+			ImgWidth = parent.find('img:eq(0)').width();
+			$('.HintText').html('Note: Image Width and Height should be '+ImgWidth+'px and '+ImgHeight+'px.');
+			$('#EditGalleryModel').modal('show');
+		});
+	}, function() {
+		$(this).children(".Layer").remove();
+	});
+	
+	$('.ListDiv').hover(function() {
+		parent = $(this);
+		DivIndex = parent.attr('a');
+		parent.append("<div class='Layer'><i class='fa fa-pencil'></i></div>");
+		$('.Layer i').click(function() {
+			$('#ListEditorModal').modal('show');
 		});
 	}, function() {
 		$(this).children(".Layer").remove();
@@ -213,7 +312,7 @@ $(function() {
 		var link = $('#Phone').val();
 		$('.PhoneDiv').html('<i class="fa fa-phone icon_phone"></i>&nbsp;&nbsp;'+link);
 	});
-	$("#ImageUploade").change(function() {
+	$(document).on('change', "#ImageUploade, .ImageUploades", function() {
 		var file = this.files[0];
 		var imagefile = file.type;
 		var match= ["image/jpeg","image/png","image/jpg"];
@@ -379,4 +478,127 @@ $(function() {
 			$('#'+formValues.CtrlDivId+' .ctrl-'+formValues.elemType).attr('placeholder', formValues.placeholder);
 		$('#'+formValues.CtrlDivId+' .ctrl-'+formValues.elemType).attr('required', formValues.isRequired==true?'required':'');
 	});
+	/* $(document).on('click','.AddMoreImages',function() {
+		var length = $('.GalleryHolder').find('input[type=file]').length;
+		length+=1;
+		var htm = '';
+		htm+='<div class="form-group"><input type="file" name="files[]" class="ImageUploades" id="GalleryImageUploade'+length+'"><input type="hidden"></div>';
+		$('.GalleryHolder').append(htm);
+	}); */
+	$(document).on('change', '#GalleryLinks', function() {
+		var LinkText = $(this).val();
+		LinkText = $.trim(LinkText);
+		LinkText =  LinkText.replace(/,\s*$/, '');
+		$(this).val(LinkText);
+		if(LinkText.split(',').length>$('.GalleryDiv').find('img').length) {
+			alert('Enter only '+$('.GalleryDiv').find('img').length+' image links');
+		} else {
+			$.each(LinkText.split(','), function(index, value) {
+				var tmpImg = new Image();
+				tmpImg.src=value; //or  document.images[i].src;
+				$(tmpImg).one('load',function(){
+				  orgWidth = tmpImg.width;
+				  orgHeight = tmpImg.height;
+				  if(orgHeight > ImgHeight || orgWidth > ImgWidth)
+					  alert("Width and Height must not exceed "+ImgWidth+"px and "+ImgHeight+"px.");
+				  return false;
+				});
+			});
+		}
+	});
+	$(document).on('click', '.SaveGallery', function(e) {
+		var errors = [];
+		var LinkText = $("#GalleryLinks").val();
+		var ImgLinks = [];
+		$.each(LinkText.split(','), function(index, value) {
+			var tmpImg = new Image();
+			tmpImg.src=value; //or  document.images[i].src;
+			$(tmpImg).one('load',function(){
+			  orgWidth = tmpImg.width;
+			  orgHeight = tmpImg.height;
+			  if(orgHeight > ImgHeight || orgWidth > ImgWidth)
+				  errors.push("Width and Height must not exceed "+ImgWidth+"px and "+ImgHeight+"px.");
+			  else
+				  ImgLinks.push(value);
+			});
+		});
+		var GalleryImgLinksLength = $('#GalleryLinks').val().split(',').length;
+		var UploadedGalleryImgLength = $(".ImageUploades").filter(function(){
+			return $.trim($(this).val())!= '';
+		}).length;
+		var TotalLength = parseInt(GalleryImgLinksLength)+parseInt(UploadedGalleryImgLength);
+		var RequiredLength = $('.GalleryDiv').find('img').length;
+		if(TotalLength>RequiredLength) {
+			errors.push('Both Uploaded or Gallery Links must be equal to '+RequiredLength);
+		}
+		if(errors.length==0) {
+			var form = $('#GalleryImgUploadForm');
+			var formdata = false;
+			if(window.FormData){
+				formdata = new FormData(form[0]);
+			}
+			var formAction = form.attr('action');
+			$.ajax({
+				type        : 'POST',
+				url         : 'uploade_file.php?imageWidth='+ImgWidth+'&imageHeight='+ImgHeight,
+				cache       : false,
+				data        : formdata ? formdata : form.serialize(),
+				contentType : false,
+				processData : false,
+				success: function(response) {
+					var obj = JSON.parse(response);
+					if(obj.responseCode=='ok') {
+						var FinalResult = [];
+						FinalResult = $.merge( LinkText.split(','), obj.responseData );
+						$.each(FinalResult, function(index,value) {
+							parent.find('img:eq('+index+')').attr('src', value);
+						});
+						$("#EditGalleryModel").modal('hide');
+					} else {
+						alert(obj.responseData);
+					}
+					
+				}
+			});
+		} else {
+			var err_txt = '';
+			$.each($.unique(errors), function(index, error) {
+				err_txt+=error+"\n";
+			});
+			alert(err_txt);
+		}
+		
+	});
+	$(document).on('keyup', '.ListText', function() {
+		if($(this).val().length>=3) {
+			var self = $(this), index  = self.attr('a'), nexIndex = parseInt(index)+1;
+			if($('#ListText'+nexIndex).length==0) {
+				var htm='';
+				htm+='<div class="form-group">';
+					htm+='<label for="ListText'+nexIndex+'" class="col-sm-2 control-label">*</label>';
+					htm+='<div class="col-sm-8">';
+						htm+='<input type="text" class="form-control ListText" id="ListText'+nexIndex+'" a='+nexIndex+' placeholder="List Item">';
+					htm+='</div>';
+					htm+='<div class="col-sm-2">';
+						htm+='<a href="javascript:void(0)" class="removeList btn btn-danger btn-xs">-</a>';
+					htm+='</div>';
+				htm+='</div>';
+				$(".DynamicListBox form").append(htm);
+			}
+		}
+	});
+	$(document).on('click','.removeList', function(e) {
+		if($('.ListText').length>1)
+			$(this).parent().parent().remove();
+		else
+			alert("You cannot remove this textbox");
+	});
+	var text = '';
+	$(".ListDiv ul li:eq(0)").children().each(function(i,v) {
+		text+=$(".ListDiv ul li:eq(0)").contents()[i];
+	});
+	//console.log($(".ListDiv ul li:eq(0)").text().replaceWith('hi'));
+	//$(".ListDiv ul li:eq(0)").contents().last()[0].textContent='Naveen';
+	//var text = $(".ListDiv ul li:eq(0)").contents()[1];
+	//console.log($(".ListDiv ul li:eq(0)").parent().children());
 });

@@ -195,7 +195,7 @@
 			<div class="col-md-8 col-sm-12 col-xs-12">
 				<h3 class="courses_off">Advantage - MBA @ MVJCE</h3><span class="arrow-down"></span>
 					<div class="row courses_row">
-						<div class="col-md-6 col-sm-6 col-xs-12">
+						<div class="col-md-6 col-sm-6 col-xs-12 ListDiv" a=1>
 							<ul class="bullet_hide">
 								<li class="li_cls"><span class="span_li"></span><span class="arrow-right"><img src="images/MVJ-landing-page-1-slicing_25.png"></span>Innovative curriculum</li>
 								<li class="li_cls"><span class="span_li"></span><span class="arrow-right"><img src="images/MVJ-landing-page-1-slicing_25.png"></span>Interactive lectures</li>
@@ -208,7 +208,7 @@
 							</ul>
 						</div>
 						
-						<div class="col-md-6 col-sm-6 col-xs-12">
+						<div class="col-md-6 col-sm-6 col-xs-12 ListDiv" a=2>
 							<ul class="bullet_hide">
 								
 								<li class="li_cls"><span class="span_li span_li1"></span><span class="arrow-right arrow-right1"><img src="images/MVJ-landing-page-1-slicing_25.png"></span>Trained faculty with a combined corporate <span class="long_arrp">experience of over 40 years</span></li>	
@@ -222,7 +222,7 @@
 			<div class="col-md-4 col-sm-6 col-xs-12 gallery_cls">
 				<div class="left_border">
 				<h4 class="h4_cls">Our Gallery</h4>
-					<div class="row_g row">
+					<div class="row_g row GalleryDiv">
       			
 						<div class="col-md-4 col-sm-4 col-xs-4">
 							<a title="Image 1" href="#"> 
